@@ -377,9 +377,18 @@ function initHowItWorksAnimation() {
     e.preventDefault();
     e.stopPropagation();
 
-    // Увеличиваем прогресс стека (быстрее для отзывчивости)
-    const delta = Math.abs(e.deltaY);
-    stackProgress = Math.min(1, stackProgress + delta / 800);
+    // Определяем направление скролла
+    const delta = e.deltaY;
+    const scrollDirection = delta > 0 ? 1 : -1; // 1 = вниз, -1 = вверх
+
+    // Изменяем прогресс в зависимости от направления
+    if (scrollDirection > 0) {
+      // Скролл вниз - увеличиваем прогресс
+      stackProgress = Math.min(1, stackProgress + Math.abs(delta) / 800);
+    } else {
+      // Скролл вверх - уменьшаем прогресс (карточки возвращаются на место)
+      stackProgress = Math.max(0, stackProgress - Math.abs(delta) / 800);
+    }
 
     // Используем requestAnimationFrame для плавности
     if (rafId) {
@@ -389,7 +398,7 @@ function initHowItWorksAnimation() {
     rafId = requestAnimationFrame(() => {
       updateCards();
       
-      // Если анимация завершена, разблокируем скролл
+      // Если анимация завершена (прогресс = 1), разблокируем скролл через небольшую задержку
       if (stackProgress >= 1) {
         setTimeout(() => {
           isSectionActive = false;
@@ -398,6 +407,12 @@ function initHowItWorksAnimation() {
           hasAnimationPlayed = true;
         }, 300);
       }
+      // Если прогресс вернулся к 0 (карточки полностью на месте), но остаемся в режиме анимации
+      // чтобы можно было снова прокручивать вниз
+      else if (stackProgress <= 0) {
+        // Карточки уже на месте благодаря updateCards(), ничего не делаем
+        // остаемся в режиме анимации для возможности дальнейшей прокрутки
+      }
       
       rafId = null;
     });
@@ -405,14 +420,19 @@ function initHowItWorksAnimation() {
 
   // Проверка, находится ли верх секции на уровне верха viewport
   const checkSectionPosition = () => {
-    if (hasAnimationPlayed || isSectionActive || isAnimating) return;
-    
     const rect = howItWorksSection.getBoundingClientRect();
     const tolerance = 10; // Допустимая погрешность в пикселях
     
+    // Если анимация уже была воспроизведена полностью, не активируем заново
+    if (hasAnimationPlayed && !isSectionActive) return;
+    
     // Проверяем, находится ли верх секции на уровне верха viewport или выше
     // и секция видна в viewport
-    if (rect.top <= tolerance && rect.top >= -tolerance && rect.bottom > 0) {
+    const isAtTop = rect.top <= tolerance && rect.top >= -tolerance && rect.bottom > 0;
+    const isNearTop = rect.top < window.innerHeight * 0.3 && rect.top > -100 && rect.bottom > 0;
+    
+    // Если секция находится на верху или близко к верху, активируем анимацию
+    if ((isAtTop || isNearTop) && !isSectionActive && !isAnimating) {
       isAnimating = true;
       
       // Если нужно подкорректировать позицию (больше допустимой погрешности)
@@ -427,6 +447,24 @@ function initHowItWorksAnimation() {
       } else {
         activateAnimation();
       }
+    }
+    
+    // Если пользователь прокрутил далеко от секции, выходим из режима анимации
+    if (isSectionActive && (rect.top > window.innerHeight || rect.bottom < 0)) {
+      isSectionActive = false;
+      stackProgress = 0;
+      window.removeEventListener('wheel', handleWheel);
+      unlockScroll();
+      // Сбрасываем позиции карточек
+      cards.forEach((card, index) => {
+        card.style.transform = '';
+        card.style.zIndex = (index + 1).toString();
+      });
+      hasAnimationPlayed = false;
+    }
+    // Если пользователь вернулся к секции после прокрутки вниз, сбрасываем флаг hasAnimationPlayed
+    else if (!isSectionActive && hasAnimationPlayed && isNearTop && rect.top > -50) {
+      hasAnimationPlayed = false;
     }
   };
 
@@ -468,7 +506,7 @@ function initHowItWorksAnimation() {
   // Проверяем при скролле более часто
   let scrollCheckRaf = null;
   const handleScrollCheck = () => {
-    if (hasAnimationPlayed || isSectionActive || isAnimating) return;
+    if (isAnimating && !isSectionActive) return;
     
     if (scrollCheckRaf) {
       cancelAnimationFrame(scrollCheckRaf);
@@ -478,6 +516,9 @@ function initHowItWorksAnimation() {
       const rect = howItWorksSection.getBoundingClientRect();
       // Проверяем, если секция находится в области viewport или чуть выше/ниже
       if (rect.top < window.innerHeight + 200 && rect.bottom > -200) {
+        checkSectionPosition();
+      } else if (isSectionActive) {
+        // Если секция ушла из viewport, сбрасываем анимацию
         checkSectionPosition();
       }
       scrollCheckRaf = null;

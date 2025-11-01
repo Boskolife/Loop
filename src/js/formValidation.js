@@ -67,7 +67,7 @@ class FormValidator {
     }
 
     // Поле name (обязательное)
-    if (id === 'name') {
+    if (id === 'name' || id === 'name-join') {
       if (!value) {
         isValid = false;
         errorMessage = 'Name is required';
@@ -90,7 +90,7 @@ class FormValidator {
       }
     }
     // Поле referral code (опциональное, но если заполнено - проверяем)
-    else if (id === 'referral') {
+    else if (id === 'referral' || id === 'referral-join') {
       // Referral code опциональное, но если заполнено - проверяем длину
       if (value && value.length > 0) {
         if (value.length < 3) {
@@ -206,9 +206,9 @@ class FormValidator {
     this.inputs.forEach(input => {
       if (input.type === 'email') {
         data.email = input.value.trim();
-      } else if (input.id === 'name') {
+      } else if (input.id === 'name' || input.id === 'name-join') {
         data.name = input.value.trim();
-      } else if (input.id === 'referral') {
+      } else if (input.id === 'referral' || input.id === 'referral-join') {
         const referralValue = input.value.trim();
         if (referralValue) {
           data.referral = referralValue;
