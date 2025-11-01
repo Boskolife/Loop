@@ -1,0 +1,503 @@
+/* eslint-env browser */
+import initFormValidation from './formValidation.js';
+import initPopupManager from './popupManager.js';
+
+// Блокировка скролла и анимация разлета баннеров для секции check-in
+function initCheckInAnimation() {
+  const checkInSection = document.querySelector('.check-in');
+  if (!checkInSection) return;
+
+  const banners = checkInSection.querySelectorAll('.check-in_banner');
+  const body = document.body;
+
+  if (banners.length === 0) return;
+
+  let isSectionActive = false;
+  let scrollProgress = 0;
+  let isAnimating = false;
+  let rafId = null;
+  let savedScrollY = 0;
+  let centerX = 0;
+  let centerY = 0;
+  let initialPositions = [];
+  let hasAnimationPlayed = false; // Флаг для отслеживания, была ли анимация уже воспроизведена
+
+  // Направления разлета от центра (нормализованные векторы)
+  const directions = [
+    { x: -0.8, y: -0.6 }, // влево-вверх
+    { x: 0.9, y: -0.4 }, // вправо-вверх
+    { x: 0.6, y: 0.8 }, // вправо-вниз
+    { x: -0.7, y: 0.7 }, // влево-вниз
+    { x: 0, y: -1 }, // вверх
+    { x: -1, y: 0 }, // влево
+    { x: 0.8, y: 0.6 }, // вправо-вниз
+  ];
+
+  // Блокировка скролла страницы
+  const lockScroll = () => {
+    savedScrollY = window.scrollY;
+    body.style.position = 'fixed';
+    body.style.top = `-${savedScrollY}px`;
+    body.style.width = '100%';
+    body.style.overflow = 'hidden';
+  };
+
+  // Разблокировка скролла страницы
+  const unlockScroll = () => {
+    body.style.position = '';
+    body.style.top = '';
+    body.style.width = '';
+    body.style.overflow = '';
+    window.scrollTo(0, savedScrollY);
+  };
+
+  // Вычисление центра контейнера и начальных позиций
+  const calculateInitialPositions = () => {
+    const container = checkInSection.querySelector('.container');
+    if (!container) return;
+
+    const containerRect = container.getBoundingClientRect();
+    centerX = containerRect.left + containerRect.width / 2;
+    centerY = containerRect.top + containerRect.height / 2;
+
+    // Сохраняем начальные позиции баннеров относительно центра
+    initialPositions = Array.from(banners).map((banner) => {
+      const rect = banner.getBoundingClientRect();
+      return {
+        x: rect.left + rect.width / 2 - centerX,
+        y: rect.top + rect.height / 2 - centerY,
+      };
+    });
+  };
+
+  // Обновление позиций баннеров при скролле
+  const updateBanners = () => {
+    if (!isSectionActive || initialPositions.length === 0) return;
+
+    const maxDistance = 800; // Максимальное расстояние разлета
+    // Применяем easing для более плавной анимации
+    const easedProgress = easeInOutCubic(scrollProgress);
+
+    banners.forEach((banner, index) => {
+      const direction = directions[index] || { x: 0, y: 0 };
+      const initialPos = initialPositions[index] || { x: 0, y: 0 };
+      // Плавное исчезновение
+      const opacity = Math.max(0, 1 - easedProgress);
+      // Плавное уменьшение масштаба
+      const scale = Math.max(0.3, 1 - easedProgress * 0.7);
+
+      // Вычисляем позицию: начальная позиция + смещение от центра
+      const offsetX = direction.x * maxDistance * easedProgress;
+      const offsetY = direction.y * maxDistance * easedProgress;
+      const x = initialPos.x + offsetX;
+      const y = initialPos.y + offsetY;
+
+      banner.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+      banner.style.opacity = opacity.toString();
+    });
+
+    // Если анимация завершена, запускаем анимацию контента
+    if (scrollProgress >= 1) {
+      setTimeout(() => {
+        isSectionActive = false;
+        window.removeEventListener('wheel', handleWheel);
+        
+        // Запускаем анимацию контента
+        animateContent();
+      }, 200);
+    }
+  };
+
+  // Анимация контента: раздвижение описаний и появление join
+  const animateContent = () => {
+    const content = checkInSection.querySelector('.check-in_content');
+    const descriptions = checkInSection.querySelectorAll('.check-in_content-description');
+    const joinBlock = checkInSection.querySelector('.hero.join');
+
+    if (!content || descriptions.length === 0 || !joinBlock) {
+      unlockScroll();
+      return;
+    }
+
+    // Начальное состояние: join скрыт и имеет нулевые размеры
+    joinBlock.style.display = 'block';
+    joinBlock.style.opacity = '0';
+    joinBlock.style.transform = 'scale(0.05)';
+    joinBlock.style.width = '0';
+    joinBlock.style.height = '0';
+    joinBlock.style.overflow = 'hidden';
+
+    let contentProgress = 0;
+    const contentDuration = 2000; // длительность анимации контента (2 секунды)
+    const startTime = Date.now();
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      contentProgress = Math.min(1, elapsed / contentDuration);
+
+      // Раздвижение описаний (происходит в первой половине)
+      const descriptionsPhase = Math.min(1, contentProgress * 2); // от 0 до 1 в первой половине
+      const descriptionsEased = easeInOutCubic(descriptionsPhase);
+
+      descriptions.forEach((desc, index) => {
+        // Первое описание улетает вверх, второе - вниз
+        const direction = index === 0 ? -1 : 1;
+        const yOffset = direction * descriptionsEased * 300; // расстояние улета
+        const opacity = Math.max(0, 1 - descriptionsEased);
+
+        desc.style.transform = `translateY(${yOffset}px)`;
+        desc.style.opacity = opacity.toString();
+      });
+
+      // Появление и рост блока join (происходит во второй половине)
+      if (contentProgress < 0.4) {
+        // Первые 40%: раздвижение описаний, join еще очень маленький
+        joinBlock.style.opacity = '0';
+        joinBlock.style.transform = 'scale(0.05)';
+        joinBlock.style.width = '0';
+        joinBlock.style.height = '0';
+      } else {
+        // Остальные 60%: появление и рост join
+        const joinProgress = (contentProgress - 0.4) / 0.6; // от 0 до 1 в оставшейся части
+        const joinEased = easeInOutCubic(joinProgress);
+        
+        // Убираем ограничения размеров, чтобы блок мог показаться в полном размере
+        if (joinProgress > 0.1) {
+          joinBlock.style.width = '';
+          joinBlock.style.height = '';
+          joinBlock.style.overflow = '';
+        }
+        
+        joinBlock.style.opacity = joinEased.toString();
+        // Масштаб от 0.05 до 1
+        joinBlock.style.transform = `scale(${0.05 + joinEased * 0.95})`;
+      }
+
+      if (contentProgress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        // Анимация завершена
+        hasAnimationPlayed = true; // Помечаем, что анимация была воспроизведена
+        unlockScroll();
+        // Скрываем описания после исчезновения
+        setTimeout(() => {
+          descriptions.forEach((desc) => {
+            desc.style.display = 'none';
+          });
+        }, 100);
+      }
+    };
+
+    animate();
+  };
+
+  // Easing функция для плавности
+  const easeInOutCubic = (t) => {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  };
+
+  // Обработка wheel событий
+  const handleWheel = (e) => {
+    if (!isSectionActive) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Увеличиваем прогресс анимации (медленнее для плавности)
+    const delta = Math.abs(e.deltaY);
+    scrollProgress = Math.min(1, scrollProgress + delta / 2000);
+
+    // Используем requestAnimationFrame для плавности
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+    }
+
+    rafId = requestAnimationFrame(() => {
+      updateBanners();
+      rafId = null;
+    });
+  };
+
+  // Intersection Observer для отслеживания секции
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        // Активируем только когда секция полностью во viewport и анимация еще не была воспроизведена
+        if (entry.isIntersecting && entry.intersectionRatio >= 1) {
+          if (!isSectionActive && !isAnimating && !hasAnimationPlayed) {
+            isSectionActive = true;
+            scrollProgress = 0;
+            isAnimating = true;
+            lockScroll();
+
+            // Вычисляем начальные позиции относительно центра
+            calculateInitialPositions();
+
+            // Сбрасываем позиции баннеров (они остаются на своих местах)
+            banners.forEach((banner) => {
+              banner.style.opacity = '1';
+            });
+
+            // Добавляем обработчик wheel
+            window.addEventListener('wheel', handleWheel, { passive: false });
+
+            setTimeout(() => {
+              isAnimating = false;
+            }, 100);
+          }
+        } else if (
+          !entry.isIntersecting &&
+          isSectionActive &&
+          scrollProgress < 1
+        ) {
+          // Если вышли из секции до завершения анимации - сбрасываем
+          isSectionActive = false;
+          scrollProgress = 0;
+          window.removeEventListener('wheel', handleWheel);
+          unlockScroll();
+          banners.forEach((banner) => {
+            banner.style.transform = '';
+            banner.style.opacity = '';
+          });
+        }
+      });
+    },
+    {
+      threshold: 1.0,
+      rootMargin: '0px',
+    },
+  );
+
+  observer.observe(checkInSection);
+
+  // Очистка при размонтировании
+  return () => {
+    observer.disconnect();
+    window.removeEventListener('wheel', handleWheel);
+    if (isSectionActive) {
+      unlockScroll();
+    }
+  };
+}
+
+// Анимация стека карточек для секции how-it-works
+function initHowItWorksAnimation() {
+  const howItWorksSection = document.querySelector('.how-it-works');
+  if (!howItWorksSection) return;
+
+  const cards = howItWorksSection.querySelectorAll('.how-it-works_content-item-overlay');
+  const body = document.body;
+
+  if (cards.length === 0) return;
+
+  let isSectionActive = false;
+  let stackProgress = 0;
+  let isAnimating = false;
+  let rafId = null;
+  let savedScrollY = 0;
+  let hasAnimationPlayed = false;
+
+  // Блокировка скролла страницы
+  const lockScroll = () => {
+    savedScrollY = window.scrollY;
+    body.style.position = 'fixed';
+    body.style.top = `-${savedScrollY}px`;
+    body.style.width = '100%';
+    body.style.overflow = 'hidden';
+  };
+
+  // Разблокировка скролла страницы
+  const unlockScroll = () => {
+    body.style.position = '';
+    body.style.top = '';
+    body.style.width = '';
+    body.style.overflow = '';
+    window.scrollTo(0, savedScrollY);
+  };
+
+  // Easing функция для плавности
+  const easeInOutCubic = (t) => {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  };
+
+  // Обновление позиций карточек (карточки наезжают друг на друга)
+  const updateCards = () => {
+    if (!isSectionActive) return;
+
+    const cardOffset = 25; // Отступ сверху для каждой карточки (эффект колоды)
+    const gap = 32; // gap между карточками (из CSS)
+
+    cards.forEach((card, index) => {
+      // Прогресс для каждой карточки (первая начинает первой)
+      const cardStartProgress = index / cards.length;
+      const cardEndProgress = (index + 1) / cards.length;
+      
+      // Вычисляем прогресс конкретной карточки
+      let cardProgress = 0;
+      if (stackProgress >= cardStartProgress) {
+        if (stackProgress >= cardEndProgress) {
+          cardProgress = 1; // Карточка полностью наехала
+        } else {
+          // Карточка в процессе движения
+          cardProgress = (stackProgress - cardStartProgress) / (cardEndProgress - cardStartProgress);
+        }
+      }
+      
+      const eased = easeInOutCubic(cardProgress);
+
+      // Смещение: карточки двигаются вверх и наезжают друг на друга
+      let yOffset = 0;
+      if (index > 0) {
+        // Начальное расстояние от первой карточки (в исходном состоянии с gap)
+        let initialDistance = 0;
+        for (let i = 0; i < index; i++) {
+          initialDistance += cards[i].offsetHeight + gap;
+        }
+        
+        // Финальное расстояние в стеке (карточки лежат друг на друге)
+        // В стеке каждая карточка смещена только на отступ
+        const finalDistance = cardOffset * index;
+        
+        // Интерполируем между начальной и конечной позицией
+        yOffset = -(initialDistance - finalDistance) * eased;
+      }
+
+      // Z-index: каждая следующая карточка выше предыдущей
+      const zIndex = index + 1 + Math.floor(eased * 5);
+      card.style.zIndex = zIndex.toString();
+
+      card.style.transform = `translateY(${yOffset}px)`;
+    });
+  };
+
+  // Обработка wheel событий
+  const handleWheel = (e) => {
+    if (!isSectionActive) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Увеличиваем прогресс стека (быстрее для отзывчивости)
+    const delta = Math.abs(e.deltaY);
+    stackProgress = Math.min(1, stackProgress + delta / 800);
+
+    // Используем requestAnimationFrame для плавности
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+    }
+
+    rafId = requestAnimationFrame(() => {
+      updateCards();
+      
+      // Если анимация завершена, разблокируем скролл
+      if (stackProgress >= 1) {
+        setTimeout(() => {
+          isSectionActive = false;
+          window.removeEventListener('wheel', handleWheel);
+          unlockScroll();
+          hasAnimationPlayed = true;
+        }, 300);
+      }
+      
+      rafId = null;
+    });
+  };
+
+  // Проверка, находится ли верх секции на уровне верха viewport
+  const checkSectionPosition = () => {
+    if (hasAnimationPlayed || isSectionActive || isAnimating) return;
+    
+    const rect = howItWorksSection.getBoundingClientRect();
+    const tolerance = 10; // Допустимая погрешность в пикселях
+    
+    // Проверяем, находится ли верх секции на уровне верха viewport или выше
+    // и секция видна в viewport
+    if (rect.top <= tolerance && rect.top >= -tolerance && rect.bottom > 0) {
+      isAnimating = true;
+      
+      // Если нужно подкорректировать позицию (больше допустимой погрешности)
+      if (Math.abs(rect.top) > tolerance / 2) {
+        window.scrollTo({
+          top: window.scrollY + rect.top,
+          behavior: 'smooth'
+        });
+        setTimeout(() => {
+          activateAnimation();
+        }, 300);
+      } else {
+        activateAnimation();
+      }
+    }
+  };
+
+  // Активация анимации
+  const activateAnimation = () => {
+    isSectionActive = true;
+    isAnimating = false;
+    stackProgress = 0;
+    lockScroll();
+    
+    // Сбрасываем позиции карточек
+    cards.forEach((card, index) => {
+      card.style.transform = '';
+      card.style.zIndex = (index + 1).toString();
+    });
+    
+    // Добавляем обработчик wheel
+    window.addEventListener('wheel', handleWheel, { passive: false });
+  };
+
+  // Intersection Observer для отслеживания приближения к секции
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        // Когда секция видна, начинаем проверять позицию
+        if (entry.isIntersecting && !hasAnimationPlayed) {
+          checkSectionPosition();
+        }
+      });
+    },
+    {
+      threshold: [0, 0.1, 0.3, 0.5],
+      rootMargin: '100px 0px' // Расширяем зону срабатывания
+    }
+  );
+
+  observer.observe(howItWorksSection);
+
+  // Проверяем при скролле более часто
+  let scrollCheckRaf = null;
+  const handleScrollCheck = () => {
+    if (hasAnimationPlayed || isSectionActive || isAnimating) return;
+    
+    if (scrollCheckRaf) {
+      cancelAnimationFrame(scrollCheckRaf);
+    }
+    
+    scrollCheckRaf = requestAnimationFrame(() => {
+      const rect = howItWorksSection.getBoundingClientRect();
+      // Проверяем, если секция находится в области viewport или чуть выше/ниже
+      if (rect.top < window.innerHeight + 200 && rect.bottom > -200) {
+        checkSectionPosition();
+      }
+      scrollCheckRaf = null;
+    });
+  };
+
+  window.addEventListener('scroll', handleScrollCheck, { passive: true });
+}
+
+// Инициализация при загрузке DOM
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    initPopupManager();
+    initCheckInAnimation();
+    initHowItWorksAnimation();
+    initFormValidation();
+  });
+} else {
+  initPopupManager();
+  initCheckInAnimation();
+  initHowItWorksAnimation();
+  initFormValidation();
+}

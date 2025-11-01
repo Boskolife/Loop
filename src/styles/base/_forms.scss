@@ -1,0 +1,163 @@
+// forms
+form,
+fieldset {
+    margin: 0;
+    border-style: none;
+}
+
+input[type='text'],
+input[type='tel'],
+input[type='email'],
+input[type='search'],
+input[type='password'],
+//input[type='url'],
+// input[type='date'],
+textarea {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+    outline: none;
+    box-sizing: border-box;
+    border: 1px solid $form-element-border-color;
+    color: $black;
+    // &:hover {
+
+    // }
+
+    &:focus {
+        border-color: $form-element-focus-border-color;
+    }
+
+    @include placeholder {
+        color: $placeholder-color;
+    }
+}
+
+input[attribute="value"] {}
+
+select {
+    -webkit-border-radius: 0;
+}
+
+textarea {
+    vertical-align: top;
+    resize: none;
+}
+
+button,
+input[type='button'],
+input[type='reset'],
+input[type='file'],
+input[type='submit'] {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+    cursor: pointer;
+    font-family: $base-font-sans-serif;
+
+    &:hover {}
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    @include adaptive-value("border-radius", 12, 4, 1);
+    border: 1px solid $black-400;
+    padding: 16px 12px;
+    background-color: $black-900;
+ 
+    transition: $animation-speed;
+
+    &:hover {
+        box-shadow: 0px 4px 12px 0px #FFFFFF40;
+        transition: $animation-speed;
+    }
+
+    &:focus-within {
+        border-color: $white;
+        transition: $animation-speed;
+        box-shadow: 0px 4px 12px 0px #FFFFFF40;
+
+        .profile-icon path {
+            stroke: $white;
+            transition: stroke $animation-speed;
+        }
+
+        .email-icon path {
+            fill: $white;
+            transition: fill $animation-speed;
+        }
+
+        .input{
+            color: $white;
+            caret-color: $white;
+            transition: $animation-speed;
+        }
+    }
+
+    .input-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .profile-icon path {
+        stroke: $black-400;
+        transition: stroke $animation-speed;
+    }
+
+    .email-icon path {
+        fill: $black-400;
+        transition: fill $animation-speed;
+    }
+
+    .input {
+        flex: 1;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        color: $black-400;
+        @include adaptive-value("font-size", 18, 16, 1);
+        line-height: calc(20 / 18);
+        padding: 0;
+        margin: 0;
+
+        @include placeholder {
+            color: $black-400;
+        }
+    }
+
+    // Стили для состояния ошибки
+    &--error {
+        border-color: #FF4444;
+        
+        &:hover {
+            box-shadow: 0px 4px 12px 0px #FF444440;
+        }
+
+        &:focus-within {
+            border-color: #FF4444;
+            box-shadow: 0px 4px 12px 0px #FF444440;
+        }
+
+        .profile-icon path {
+            stroke: #FF4444;
+        }
+
+        .email-icon path {
+            fill: #FF4444;
+        }
+
+        .input {
+            color: #FF4444;
+            caret-color: #FF4444;
+        }
+    }
+}
+
+// Сообщения об ошибках
+.error-message {
+    display: block;
+    color: #FF4444;
+    @include adaptive-value("font-size", 14, 12, 1);
+    line-height: calc(18 / 14);
+    padding-left: 12px;
+}

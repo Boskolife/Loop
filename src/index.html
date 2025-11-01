@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loop</title>
+
+  <link rel="stylesheet" href="/styles/main.scss">
+  <script type="module" src="/js/main.js"></script>
+</head>
+
+<body>
+  {{> header }}
+  <div id="wrapper">
+    <main>
+      <section class="hero default-section">
+        <div class="container">
+          <div class="hero_content-overlay">
+            <div class="hero_content">
+              <img src="/images/hero-bg.png" alt="image not found" class="hero_image" width="500"
+                height="500">
+
+              <div class="hero_content-inner">
+                <h1 class="hero_title">
+                  <span class="hero_title-text-top">A new kind of streak is coming.</span>
+                  <span class="hero_title-text-bottom">Don’t break the loop</span>
+                </h1>
+                <p class="hero_description">Build shared habits that connect schools, teams, and
+                  friends.
+                </p>
+                <form action="" class="hero_form">
+                  <div class="input-wrapper">
+                    <label for="name" for="name" class="input-label sr-only"
+                      aria-hidden="true">Name</label>
+                    <svg class="input-icon profile-icon" width="24" height="24" viewBox="0 0 24 24"
+                      fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M12.1605 10.87C12.0605 10.86 11.9405 10.86 11.8305 10.87C9.45055 10.79 7.56055 8.84 7.56055 6.44C7.56055 3.99 9.54055 2 12.0005 2C14.4505 2 16.4405 3.99 16.4405 6.44C16.4305 8.84 14.5405 10.79 12.1605 10.87Z"
+                        stroke="#6D6D6F" stroke-linecap="round" stroke-linejoin="round" />
+                      <path
+                        d="M7.1607 14.56C4.7407 16.18 4.7407 18.82 7.1607 20.43C9.9107 22.27 14.4207 22.27 17.1707 20.43C19.5907 18.81 19.5907 16.17 17.1707 14.56C14.4307 12.73 9.9207 12.73 7.1607 14.56Z"
+                        stroke="#6D6D6F" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+
+                    <input type="text" id="name" placeholder="Enter your name" class="input">
+                  </div>
+                  <div class="input-wrapper">
+                    <label for="email" for="email" class="input-label sr-only"
+                      aria-hidden="true">Email</label>
+                    <svg class="input-icon email-icon" width="24" height="24" viewBox="0 0 24 24"
+                      fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M17 21.25H7C3.35 21.25 1.25 19.15 1.25 15.5V8.5C1.25 4.85 3.35 2.75 7 2.75H17C20.65 2.75 22.75 4.85 22.75 8.5V15.5C22.75 19.15 20.65 21.25 17 21.25ZM7 4.25C4.14 4.25 2.75 5.64 2.75 8.5V15.5C2.75 18.36 4.14 19.75 7 19.75H17C19.86 19.75 21.25 18.36 21.25 15.5V8.5C21.25 5.64 19.86 4.25 17 4.25H7Z"
+                        fill="#6D6D6F" />
+                      <path
+                        d="M11.9988 12.87C11.1588 12.87 10.3088 12.61 9.6588 12.08L6.5288 9.57997C6.2088 9.31997 6.14881 8.84997 6.4088 8.52997C6.66881 8.20997 7.13881 8.14997 7.45881 8.40997L10.5888 10.91C11.3488 11.52 12.6388 11.52 13.3988 10.91L16.5288 8.40997C16.8488 8.14997 17.3288 8.19997 17.5788 8.52997C17.8388 8.84997 17.7888 9.32997 17.4588 9.57997L14.3288 12.08C13.6888 12.61 12.8388 12.87 11.9988 12.87Z"
+                        fill="#6D6D6F" />
+                    </svg>
+                    <input type="email" placeholder="Enter your email" class="input">
+                  </div>
+                  <label for="referral" for="referral" class="input-label">I have a referral
+                    code</label>
+                  <div class="input-wrapper">
+                    <input type="text" id="referral" placeholder="Enter your referral code"
+                      class="input">
+                  </div>
+                  <button type="submit" class="hero_form-button button button-primary">Join the
+                    waitlist</button>
+                </form>
+                <div class="hero-tips">
+                  <div class="hero-tips-item">Invite 5 friends –> jump 100 spots.</div>
+                  <div class="hero-tips-item">Top 25,000 = OG badge.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="turns default-section">
+        <div class="container">
+          <h2 class="turns_title">
+            Loop turns your daily habits into shared streaks.
+          </h2>
+          <p class="turns_description">
+            Stay consistent, stay connected — and never lose momentum.
+          </p>
+          <div class="turns_content">
+            <div class="turns_content-item">
+              <h3 class="turns_content-item-title">Track anything</h3>
+              <p class="turns_content-item-description">
+                From workouts to study goals to sleep.
+              </p>
+              <img src="./images/phone_1.png" alt="image not found" class="turns_content-item-image"
+                width="500" height="500">
+            </div>
+            <div class="turns_content-item">
+              <h3 class="turns_content-item-title">Create loops with friends</h3>
+              <p class="turns_content-item-description">
+                Stay accountable and grow together.
+              </p>
+              <img src="./images/phone_2.png" alt="image not found" class="turns_content-item-image"
+                width="500" height="500">
+            </div>
+            <div class="turns_content-item">
+              <h3 class="turns_content-item-title">Keep your streak alive</h3>
+              <p class="turns_content-item-description">
+                Every check-in strengthens your loop.
+              </p>
+              <img src="./images/phone_3.png" alt="image not found" class="turns_content-item-image"
+                width="500" height="500">
+            </div>
+            <div class="turns_content-item">
+              <h3 class="turns_content-item-title">Climb the leaderboard </h3>
+              <p class="turns_content-item-description">
+                Compete or collab, your call.
+              </p>
+              <img src="./images/phone_4.png" alt="image not found" class="turns_content-item-image"
+                width="500" height="500">
+            </div>
+          </div>
+          <a href="#" class="turns_button button button-primary">Join the waitlist</a>
+        </div>
+      </section>
+      <section class="turns choose default-section">
+        <div class="container">
+          <h2 class="turns_title">
+            Choose your <br> kind of loop:
+          </h2>
+          <div class="turns_content">
+            <div class="turns_content-item">
+              <h3 class="turns_content-item-title">Public Loops</h3>
+              <p class="turns_content-item-description">
+                Your school competes other schools.
+              </p>
+              <img src="./images/phone_5.png" alt="image not found" class="turns_content-item-image"
+                width="500" height="500">
+            </div>
+            <div class="turns_content-item">
+              <h3 class="turns_content-item-title">Group Loops</h3>
+              <p class="turns_content-item-description">
+                Friends or clubs grow stronger together.
+              </p>
+              <img src="./images/phone_6.png" alt="image not found" class="turns_content-item-image"
+                width="500" height="500">
+            </div>
+            <div class="turns_content-item">
+              <h3 class="turns_content-item-title">Solo Loops</h3>
+              <p class="turns_content-item-description">
+                Your private streak, your own pace.
+              </p>
+              <img src="./images/phone_7.png" alt="image not found" class="turns_content-item-image"
+                width="500" height="500">
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="how-it-works default-section">
+        <div class="glow"></div>
+        <div class="container">
+          <h2 class="how-it-works_title">
+            How it works
+          </h2>
+          <div class="how-it-works_content">
+            <div class="how-it-works_content-item-overlay">
+              <div class="how-it-works_content-item">
+                <h3 class="how-it-works_content-item-title">
+                  <span class="how-it-works_content-item-title-number">1.</span> Create or join a
+                  loop
+                </h3>
+                <img src="./images/phone_8.png" alt="image not found"
+                  class="how-it-works_content-item-image" width="500" height="500">
+              </div>
+            </div>
+            <div class="how-it-works_content-item-overlay">
+              <div class="how-it-works_content-item">
+                <h3 class="how-it-works_content-item-title">
+                  <span class="how-it-works_content-item-title-number">2.</span> Check in
+                  daily
+                </h3>
+                <img src="./images/phone_9.png" alt="image not found"
+                  class="how-it-works_content-item-image image-1" width="500" height="500">
+                <img src="./images/phone_10.png" alt="image not found"
+                  class="how-it-works_content-item-image image-2" width="500" height="500">
+              </div>
+            </div>
+            <div class="how-it-works_content-item-overlay">
+              <div class="how-it-works_content-item">
+                <h3 class="how-it-works_content-item-title">
+                  <span class="how-it-works_content-item-title-number">3.</span> Stay in sync &
+                  climb
+                  <br> the leaderboard
+                </h3>
+                <img src="./images/phone_11.png" alt="image not found"
+                  class="how-it-works_content-item-image" width="500" height="500">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="check-in default-section">
+        <div class="container">
+          <div class="check-in_banner-1 check-in_banner">
+            <img src="./images/banners/banner-3.png" alt="image not found"
+              class="check-in_banner-1-image" width="233" height="126">
+            <img src="./images/banners/banner-btn-1.png" alt="image not found"
+              class="check-in_banner-1-button" width="111" height="76">
+          </div>
+          <div class="check-in_banner-2 check-in_banner">
+            <img src="./images/banners/banner-4.png" alt="image not found"
+              class="check-in_banner-2-image" width="258" height="107">
+          </div>
+          <div class="check-in_banner-3 check-in_banner">
+            <img src="./images/banners/banner-1.png" alt="image not found"
+              class="check-in_banner-3-image" width="236" height="104">
+            <img src="./images/banners/banner-btn-2.png" alt="image not found"
+              class="check-in_banner-3-button" width="111" height="76">
+          </div>
+          <div class="check-in_banner-4 check-in_banner">
+            <img src="./images/banners/banner-2.png" alt="image not found"
+              class="check-in_banner-4-image" width="241" height="138">
+          </div>
+          <div class="check-in_banner-5 check-in_banner">
+            <img src="./images/banners/banner-5.png" alt="image not found"
+              class="check-in_banner-5-image" width="316" height="195">
+          </div>
+          <div class="check-in_banner-6 check-in_banner">
+            <img src="./images/banners/banner-6.png" alt="image not found"
+              class="check-in_banner-6-image" width="177" height="185">
+          </div>
+          <div class="check-in_banner-7 check-in_banner">
+            <img src="./images/banners/banner-btn-3.png" alt="image not found"
+              class="check-in_banner-7-button" width="111" height="76">
+          </div>
+          <div class="check-in_content">
+            <h3 class="check-in_content-description description-top">
+              Loop isn’t another tracker — it’s a living system of accountability and energy.
+            </h3>
+            <div class="hero join default-section">
+              <div class="hero_content-overlay">
+                <div class="hero_content">
+                  <img src="/images/hero-bg.png" alt="image not found" class="hero_image"
+                    width="500" height="500">
+                  <div class="hero_content-inner">
+                    <h2 class="join_title">
+                      Ready to join <br>
+                      your first loop?
+                    </h2>
+                    <p class="join_description">The earlier you join, <br>
+                      the higher you start.
+                    </p>
+                    <form action="" class="hero_form">
+                      <div class="input-wrapper">
+                        <label for="name" for="name" class="input-label sr-only"
+                          aria-hidden="true">Name</label>
+                        <svg class="input-icon profile-icon" width="24" height="24"
+                          viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M12.1605 10.87C12.0605 10.86 11.9405 10.86 11.8305 10.87C9.45055 10.79 7.56055 8.84 7.56055 6.44C7.56055 3.99 9.54055 2 12.0005 2C14.4505 2 16.4405 3.99 16.4405 6.44C16.4305 8.84 14.5405 10.79 12.1605 10.87Z"
+                            stroke="#6D6D6F" stroke-linecap="round" stroke-linejoin="round" />
+                          <path
+                            d="M7.1607 14.56C4.7407 16.18 4.7407 18.82 7.1607 20.43C9.9107 22.27 14.4207 22.27 17.1707 20.43C19.5907 18.81 19.5907 16.17 17.1707 14.56C14.4307 12.73 9.9207 12.73 7.1607 14.56Z"
+                            stroke="#6D6D6F" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+
+                        <input type="text" id="name" placeholder="Enter your name" class="input">
+                      </div>
+                      <div class="input-wrapper">
+                        <label for="email" for="email" class="input-label sr-only"
+                          aria-hidden="true">Email</label>
+                        <svg class="input-icon email-icon" width="24" height="24"
+                          viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M17 21.25H7C3.35 21.25 1.25 19.15 1.25 15.5V8.5C1.25 4.85 3.35 2.75 7 2.75H17C20.65 2.75 22.75 4.85 22.75 8.5V15.5C22.75 19.15 20.65 21.25 17 21.25ZM7 4.25C4.14 4.25 2.75 5.64 2.75 8.5V15.5C2.75 18.36 4.14 19.75 7 19.75H17C19.86 19.75 21.25 18.36 21.25 15.5V8.5C21.25 5.64 19.86 4.25 17 4.25H7Z"
+                            fill="#6D6D6F" />
+                          <path
+                            d="M11.9988 12.87C11.1588 12.87 10.3088 12.61 9.6588 12.08L6.5288 9.57997C6.2088 9.31997 6.14881 8.84997 6.4088 8.52997C6.66881 8.20997 7.13881 8.14997 7.45881 8.40997L10.5888 10.91C11.3488 11.52 12.6388 11.52 13.3988 10.91L16.5288 8.40997C16.8488 8.14997 17.3288 8.19997 17.5788 8.52997C17.8388 8.84997 17.7888 9.32997 17.4588 9.57997L14.3288 12.08C13.6888 12.61 12.8388 12.87 11.9988 12.87Z"
+                            fill="#6D6D6F" />
+                        </svg>
+                        <input type="email" placeholder="Enter your email" class="input">
+                      </div>
+                      <label for="referral" for="referral" class="input-label">I have a referral
+                        code</label>
+                      <div class="input-wrapper">
+                        <input type="text" id="referral" placeholder="Enter your referral code"
+                          class="input">
+                      </div>
+                      <button type="submit" class="hero_form-button button button-primary">Join
+                        the
+                        waitlist</button>
+                    </form>
+                    <div class="hero-tips">
+                      <div class="hero-tips-item">Invite 5 friends –> jump 100 spots.</div>
+                      <div class="hero-tips-item">Top 25,000 = OG badge.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h3 class="check-in_content-description description-bottom">
+              Every check-in, every friend, every streak — it all connects into one glowing loop.
+            </h3>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+  {{> login-popup }}
+  {{> thanks-popup }}
+  {{> confirm-popup }}
+  {{> footer }}
+</body>
+
+</html>
