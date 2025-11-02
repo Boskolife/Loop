@@ -528,6 +528,149 @@ function initHowItWorksAnimation() {
   window.addEventListener('scroll', handleScrollCheck, { passive: true });
 }
 
+// Анимация прогресс-бара на странице профиля
+function initProfileProgressAnimation() {
+  const progressSection = document.querySelector('.profile_progress');
+  if (!progressSection) return;
+
+  const progressFill = progressSection.querySelector('.profile_progress-bar-fill');
+  const progressNumber = progressSection.querySelector('.profile_progress-number');
+  
+  if (!progressFill || !progressNumber) return;
+
+  // Получаем целевой процент из data-атрибута или из текста
+  const targetPercent = parseInt(progressNumber.dataset.target || progressNumber.textContent.replace('%', ''), 10);
+  
+  if (isNaN(targetPercent) || targetPercent < 0 || targetPercent > 100) return;
+
+  // Константы для расчета
+  const circumference = 534.07; // 2 * Math.PI * 85 (радиус окружности)
+  const startOffset = circumference; // Начинаем с полного круга (0%)
+  const targetOffset = circumference * (1 - targetPercent / 100); // Финальное смещение
+
+  // Easing функция для плавной анимации
+  const easeOutCubic = (t) => {
+    return 1 - Math.pow(1 - t, 3);
+  };
+
+  // Параметры анимации
+  const duration = 1500; // Длительность анимации в миллисекундах
+  const startTime = Date.now();
+  let currentPercent = 0;
+
+  // Функция анимации
+  const animate = () => {
+    const elapsed = Date.now() - startTime;
+    const progress = Math.min(1, elapsed / duration);
+    const easedProgress = easeOutCubic(progress);
+
+    // Вычисляем текущий процент и offset
+    currentPercent = Math.floor(easedProgress * targetPercent);
+    const currentOffset = startOffset - (startOffset - targetOffset) * easedProgress;
+
+    // Обновляем SVG через CSS переменную
+    progressSection.style.setProperty('--progress-offset', `${currentOffset}`);
+
+    // Обновляем текст
+    progressNumber.textContent = `${currentPercent}%`;
+
+    // Продолжаем анимацию, если не достигли цели
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      // Убеждаемся, что финальные значения точные
+      progressSection.style.setProperty('--progress-offset', `${targetOffset}`);
+      progressNumber.textContent = `${targetPercent}%`;
+    }
+  };
+
+  // Запускаем анимацию с небольшой задержкой для лучшего эффекта
+  setTimeout(() => {
+    requestAnimationFrame(animate);
+  }, 300);
+}
+
+// Инициализация копирования реферальной ссылки
+function initCopyReferralLink() {
+  const copyButton = document.querySelector('.profile_refferal-link-copy');
+  const referralLink = document.querySelector('.profile_refferal-link');
+  const linkWrapper = document.querySelector('.profile_refferal-link-wrapper');
+  
+  if (!copyButton || !referralLink || !linkWrapper) return;
+
+  copyButton.addEventListener('click', async () => {
+    const textToCopy = referralLink.textContent.trim();
+    
+    try {
+      // Используем Clipboard API для копирования
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(textToCopy);
+      } else {
+        // Fallback для старых браузеров
+        const textArea = document.createElement('textarea');
+        textArea.value = textToCopy;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+          document.execCommand('copy');
+        } catch (err) {
+          console.error('Failed to copy:', err);
+          return;
+        }
+        
+        document.body.removeChild(textArea);
+      }
+      
+      // Визуальная обратная связь
+      copyButton.classList.add('copied');
+      
+      // Создаем и показываем toast-уведомление
+      showCopyToast(linkWrapper);
+      
+      setTimeout(() => {
+        copyButton.classList.remove('copied');
+      }, 200);
+    } catch (err) {
+      console.error('Failed to copy text:', err);
+    }
+  });
+}
+
+// Функция для показа toast-уведомления о копировании
+function showCopyToast(container) {
+  // Удаляем существующий toast, если есть
+  const existingToast = document.querySelector('.copy-toast');
+  if (existingToast) {
+    existingToast.remove();
+  }
+
+  // Создаем элемент toast
+  const toast = document.createElement('div');
+  toast.className = 'copy-toast';
+  toast.textContent = 'Copied!';
+  
+  // Добавляем toast в контейнер
+  container.appendChild(toast);
+  
+  // Запускаем анимацию появления
+  requestAnimationFrame(() => {
+    toast.classList.add('copy-toast--show');
+  });
+  
+  // Удаляем toast после анимации
+  setTimeout(() => {
+    toast.classList.remove('copy-toast--show');
+    setTimeout(() => {
+      toast.remove();
+    }, 300);
+  }, 2000);
+}
+
 // Инициализация при загрузке DOM
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
@@ -535,10 +678,14 @@ if (document.readyState === 'loading') {
     initCheckInAnimation();
     initHowItWorksAnimation();
     initFormValidation();
+    initProfileProgressAnimation();
+    initCopyReferralLink();
   });
 } else {
   initPopupManager();
   initCheckInAnimation();
   initHowItWorksAnimation();
   initFormValidation();
+  initProfileProgressAnimation();
+  initCopyReferralLink();
 }

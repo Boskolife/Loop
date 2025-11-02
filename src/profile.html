@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loop</title>
+
+  <link rel="stylesheet" href="/styles/main.scss">
+  <script type="module" src="/js/main.js"></script>
+</head>
+
+<body class="profile-page">
+  {{> header }}
+  <div id="wrapper">
+    <main>
+      <section class="profile default-section">
+        <div class="container">
+          <div class="profile_content-overlay">
+            <div class="profile_content">
+              <img src="/images/hero-bg.png" alt="image not found" class="profile_image" width="500"
+                height="500">
+              <div class="profile_content-inner">
+                <div class="profile_position">
+                  <span class="profile_position-title">Your Position</span>
+                  <span class="profile_position-number">#450</span>
+                </div>
+                <div class="profile_refferal">
+                  <span class="profile_refferal-title">Your Referral Link</span>
+                  <span class="profile_refferal-link-wrapper">
+                    <span class="profile_refferal-link">https://af97fc3b-bf80-4513-9eee</span>
+                    <button class="profile_refferal-link-copy">
+                      <img src="./images/copy.svg" alt="copy icon" width="25" height="28">
+                    </button>
+                  </span>
+                </div>
+                <div class="profile_share">
+                  <span class="profile_share-title">Share on</span>
+                  <div class="profile_share-links">
+                    <a href="#" class="profile_share-link">
+                      <img src="./images/whatsup.svg" alt="whatsup" width="52" height="52">
+                    </a>
+                    <a href="#" class="profile_share-link">
+                      <img src="./images/instagram.svg" alt="instagram" width="52" height="52">
+                    </a>
+                    <a href="#" class="profile_share-link">
+                      <img src="./images/tiktok.svg" alt="tiktok" width="52" height="52">
+                    </a>
+                  </div>
+                </div>
+                <div class="profile_progress">
+                  <span class="profile_progress-title">Your Progress</span>
+                  <div class="profile_progress-bar-wrapper">
+                    <svg class="profile_progress-bar" viewBox="0 0 200 200">
+                      <defs>
+                        <linearGradient id="progressGradient" gradientUnits="userSpaceOnUse"
+                          x1="185" y1="100" x2="15" y2="100" gradientTransform="rotate(90 100 100)">
+                          <stop offset="0%" stop-color="#4A00FF" />
+                          <stop offset="100%" stop-color="#F16602" />
+                        </linearGradient>
+                      </defs>
+                      <circle class="profile_progress-bar-bg" cx="100" cy="100" r="85" />
+                      <circle class="profile_progress-bar-fill" cx="100" cy="100" r="85" />
+                    </svg>
+                    <span class="profile_progress-number" data-target="80">0%</span>
+                  </div>
+                </div>
+                <div class="profile-tips">
+                  <div class="profile-tips-item">Invite 5 friends –> jump 100 spots.</div>
+                  <div class="profile-tips-item">Top 25,000 = OG badge.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="leaderboard default-section">
+        <div class="container">
+          <h2 class="leaderboard_title">Who’s climbing <br> fastest</h2>
+          <div class="leaderboard_overlay">
+            <div class="leaderboard_content">
+              <div class="leaderboard_content-list-head">
+                <span class="leaderboard_content-list-head-item">Rank</span>
+                <span class="leaderboard_content-list-head-item">Name</span>
+                <span class="leaderboard_content-list-head-item">Invites</span>
+                <span class="leaderboard_content-list-head-item">Movement</span>
+              </div>
+              <div class="leaderboard_content-list">
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#1</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#2</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#3</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#4</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#1</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#2</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#3</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#4</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#1</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#2</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#3</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#4</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#1</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#2</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#3</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#4</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="leaderboard_button button button-secondary">View My Position</button>
+        </div>
+      </section>
+      <section class="leaderboard invites default-section">
+        <div class="container">
+          <h2 class="leaderboard_title">Your Invites <br> Progress</h2>
+          <div class="leaderboard_overlay">
+            <div class="leaderboard_content">
+              <div class="leaderboard_content-list-head">
+                <span class="leaderboard_content-list-head-item">Rank</span>
+                <span class="leaderboard_content-list-head-item">Name</span>
+                <span class="leaderboard_content-list-head-item">Invites</span>
+                <span class="leaderboard_content-list-head-item">Movement</span>
+              </div>
+              <div class="leaderboard_content-list">
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#1</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#2</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#3</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#4</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#1</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#2</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#3</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#4</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#1</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#2</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#3</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#4</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#1</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#2</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#3</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+                <div class="leaderboard_content-list-row">
+                  <span class="leaderboard_content-list-item rank">#4</span>
+                  <span class="leaderboard_content-list-item name">Anthony C.</span>
+                  <span class="leaderboard_content-list-item invites">44</span>
+                  <span class="leaderboard_content-list-item movement">2</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="rewards default-section">
+        <div class="container">
+          <h2 class="rewards_title">The first 25,000 <br> verified users earn <br> OG status.</h2>
+          <img class="rewards_image" src="/images/diamond.png" alt= "diamond" width="500" height="500">
+          <p class="rewards_description rewards_description-first">Every referral gets you closer.</p>
+          <p class="rewards_description rewards_description-second">Your badge will appear inside the app at launch.</p>
+        </div>
+      </section>
+      <section class="turns default-section">
+        <div class="container">
+          <h2 class="turns_title">
+            Loop turns your daily habits into shared streaks.
+          </h2>
+          <p class="turns_description">
+            Stay consistent, stay connected — and never lose momentum.
+          </p>
+          <div class="turns_content">
+            <div class="turns_content-item">
+              <h3 class="turns_content-item-title">Track anything</h3>
+              <p class="turns_content-item-description">
+                From workouts to study goals to sleep.
+              </p>
+              <img src="./images/phone_1.png" alt="image not found" class="turns_content-item-image"
+                width="500" height="500">
+            </div>
+            <div class="turns_content-item">
+              <h3 class="turns_content-item-title">Create loops with friends</h3>
+              <p class="turns_content-item-description">
+                Stay accountable and grow together.
+              </p>
+              <img src="./images/phone_2.png" alt="image not found" class="turns_content-item-image"
+                width="500" height="500">
+            </div>
+            <div class="turns_content-item">
+              <h3 class="turns_content-item-title">Keep your streak alive</h3>
+              <p class="turns_content-item-description">
+                Every check-in strengthens your loop.
+              </p>
+              <img src="./images/phone_3.png" alt="image not found" class="turns_content-item-image"
+                width="500" height="500">
+            </div>
+            <div class="turns_content-item">
+              <h3 class="turns_content-item-title">Climb the leaderboard </h3>
+              <p class="turns_content-item-description">
+                Compete or collab, your call.
+              </p>
+              <img src="./images/phone_4.png" alt="image not found" class="turns_content-item-image"
+                width="500" height="500">
+            </div>
+          </div>
+          <a href="#" class="turns_button button button-primary">Join the waitlist</a>
+        </div>
+      </section>
+      <section class="turns choose default-section">
+        <div class="container">
+          <h2 class="turns_title">
+            Choose your <br> kind of loop:
+          </h2>
+          <div class="turns_content">
+            <div class="turns_content-item">
+              <h3 class="turns_content-item-title">Public Loops</h3>
+              <p class="turns_content-item-description">
+                Your school competes other schools.
+              </p>
+              <img src="./images/phone_5.png" alt="image not found" class="turns_content-item-image"
+                width="500" height="500">
+            </div>
+            <div class="turns_content-item">
+              <h3 class="turns_content-item-title">Group Loops</h3>
+              <p class="turns_content-item-description">
+                Friends or clubs grow stronger together.
+              </p>
+              <img src="./images/phone_6.png" alt="image not found" class="turns_content-item-image"
+                width="500" height="500">
+            </div>
+            <div class="turns_content-item">
+              <h3 class="turns_content-item-title">Solo Loops</h3>
+              <p class="turns_content-item-description">
+                Your private streak, your own pace.
+              </p>
+              <img src="./images/phone_7.png" alt="image not found" class="turns_content-item-image"
+                width="500" height="500">
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="how-it-works default-section">
+        <div class="glow"></div>
+        <div class="container">
+          <h2 class="how-it-works_title">
+            How it works
+          </h2>
+          <div class="how-it-works_content">
+            <div class="how-it-works_content-item-overlay">
+              <div class="how-it-works_content-item">
+                <h3 class="how-it-works_content-item-title">
+                  <span class="how-it-works_content-item-title-number">1.</span> Create or join a
+                  loop
+                </h3>
+                <img src="./images/phone_8.png" alt="image not found"
+                  class="how-it-works_content-item-image" width="500" height="500">
+              </div>
+            </div>
+            <div class="how-it-works_content-item-overlay">
+              <div class="how-it-works_content-item">
+                <h3 class="how-it-works_content-item-title">
+                  <span class="how-it-works_content-item-title-number">2.</span> Check in
+                  daily
+                </h3>
+                <img src="./images/phone_9.png" alt="image not found"
+                  class="how-it-works_content-item-image image-1" width="500" height="500">
+                <img src="./images/phone_10.png" alt="image not found"
+                  class="how-it-works_content-item-image image-2" width="500" height="500">
+              </div>
+            </div>
+            <div class="how-it-works_content-item-overlay">
+              <div class="how-it-works_content-item">
+                <h3 class="how-it-works_content-item-title">
+                  <span class="how-it-works_content-item-title-number">3.</span> Stay in sync &
+                  climb
+                  <br> the leaderboard
+                </h3>
+                <img src="./images/phone_11.png" alt="image not found"
+                  class="how-it-works_content-item-image" width="500" height="500">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  {{> footer }}
+</body>
+
+</html>
