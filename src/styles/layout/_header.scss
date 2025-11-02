@@ -39,4 +39,58 @@
             }
         }
     }
+
+    &_button-avatar-wrapper {
+        position: relative;
+        display: none;
+    }
+
+    &_button-avatar {
+        display: block;
+        padding: 0;
+        margin: 0;
+        background-color: transparent;
+        border: none;
+
+        border-radius: 50%;
+        overflow: hidden;
+        width: 56px;
+        height: 56px;
+
+
+        @include media ("<tablet") {
+            width: 44px;
+            height: 44px;
+        }
+    }
+
+    &_button-logout {
+        position: absolute;
+        bottom: -200%;
+        right: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 200px;
+        height: 92px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        pointer-events: none;
+
+        @include media ("<tablet") {
+            width: 180px;
+            height: 60px;
+        }
+
+        &--show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+    }
 }

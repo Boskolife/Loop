@@ -101,7 +101,7 @@ function initCheckInAnimation() {
       setTimeout(() => {
         isSectionActive = false;
         window.removeEventListener('wheel', handleWheel);
-        
+
         // Запускаем анимацию контента
         animateContent();
       }, 200);
@@ -111,7 +111,9 @@ function initCheckInAnimation() {
   // Анимация контента: раздвижение описаний и появление join
   const animateContent = () => {
     const content = checkInSection.querySelector('.check-in_content');
-    const descriptions = checkInSection.querySelectorAll('.check-in_content-description');
+    const descriptions = checkInSection.querySelectorAll(
+      '.check-in_content-description',
+    );
     const joinBlock = checkInSection.querySelector('.hero.join');
 
     if (!content || descriptions.length === 0 || !joinBlock) {
@@ -160,14 +162,14 @@ function initCheckInAnimation() {
         // Остальные 60%: появление и рост join
         const joinProgress = (contentProgress - 0.4) / 0.6; // от 0 до 1 в оставшейся части
         const joinEased = easeInOutCubic(joinProgress);
-        
+
         // Убираем ограничения размеров, чтобы блок мог показаться в полном размере
         if (joinProgress > 0.1) {
           joinBlock.style.width = '';
           joinBlock.style.height = '';
           joinBlock.style.overflow = '';
         }
-        
+
         joinBlock.style.opacity = joinEased.toString();
         // Масштаб от 0.05 до 1
         joinBlock.style.transform = `scale(${0.05 + joinEased * 0.95})`;
@@ -285,7 +287,9 @@ function initHowItWorksAnimation() {
   const howItWorksSection = document.querySelector('.how-it-works');
   if (!howItWorksSection) return;
 
-  const cards = howItWorksSection.querySelectorAll('.how-it-works_content-item-overlay');
+  const cards = howItWorksSection.querySelectorAll(
+    '.how-it-works_content-item-overlay',
+  );
   const body = document.body;
 
   if (cards.length === 0) return;
@@ -331,7 +335,7 @@ function initHowItWorksAnimation() {
       // Прогресс для каждой карточки (первая начинает первой)
       const cardStartProgress = index / cards.length;
       const cardEndProgress = (index + 1) / cards.length;
-      
+
       // Вычисляем прогресс конкретной карточки
       let cardProgress = 0;
       if (stackProgress >= cardStartProgress) {
@@ -339,10 +343,12 @@ function initHowItWorksAnimation() {
           cardProgress = 1; // Карточка полностью наехала
         } else {
           // Карточка в процессе движения
-          cardProgress = (stackProgress - cardStartProgress) / (cardEndProgress - cardStartProgress);
+          cardProgress =
+            (stackProgress - cardStartProgress) /
+            (cardEndProgress - cardStartProgress);
         }
       }
-      
+
       const eased = easeInOutCubic(cardProgress);
 
       // Смещение: карточки двигаются вверх и наезжают друг на друга
@@ -353,11 +359,11 @@ function initHowItWorksAnimation() {
         for (let i = 0; i < index; i++) {
           initialDistance += cards[i].offsetHeight + gap;
         }
-        
+
         // Финальное расстояние в стеке (карточки лежат друг на друге)
         // В стеке каждая карточка смещена только на отступ
         const finalDistance = cardOffset * index;
-        
+
         // Интерполируем между начальной и конечной позицией
         yOffset = -(initialDistance - finalDistance) * eased;
       }
@@ -397,7 +403,7 @@ function initHowItWorksAnimation() {
 
     rafId = requestAnimationFrame(() => {
       updateCards();
-      
+
       // Если анимация завершена (прогресс = 1), разблокируем скролл через небольшую задержку
       if (stackProgress >= 1) {
         setTimeout(() => {
@@ -413,7 +419,7 @@ function initHowItWorksAnimation() {
         // Карточки уже на месте благодаря updateCards(), ничего не делаем
         // остаемся в режиме анимации для возможности дальнейшей прокрутки
       }
-      
+
       rafId = null;
     });
   };
@@ -422,24 +428,26 @@ function initHowItWorksAnimation() {
   const checkSectionPosition = () => {
     const rect = howItWorksSection.getBoundingClientRect();
     const tolerance = 10; // Допустимая погрешность в пикселях
-    
+
     // Если анимация уже была воспроизведена полностью, не активируем заново
     if (hasAnimationPlayed && !isSectionActive) return;
-    
+
     // Проверяем, находится ли верх секции на уровне верха viewport или выше
     // и секция видна в viewport
-    const isAtTop = rect.top <= tolerance && rect.top >= -tolerance && rect.bottom > 0;
-    const isNearTop = rect.top < window.innerHeight * 0.3 && rect.top > -100 && rect.bottom > 0;
-    
+    const isAtTop =
+      rect.top <= tolerance && rect.top >= -tolerance && rect.bottom > 0;
+    const isNearTop =
+      rect.top < window.innerHeight * 0.3 && rect.top > -100 && rect.bottom > 0;
+
     // Если секция находится на верху или близко к верху, активируем анимацию
     if ((isAtTop || isNearTop) && !isSectionActive && !isAnimating) {
       isAnimating = true;
-      
+
       // Если нужно подкорректировать позицию (больше допустимой погрешности)
       if (Math.abs(rect.top) > tolerance / 2) {
         window.scrollTo({
           top: window.scrollY + rect.top,
-          behavior: 'smooth'
+          behavior: 'smooth',
         });
         setTimeout(() => {
           activateAnimation();
@@ -448,7 +456,7 @@ function initHowItWorksAnimation() {
         activateAnimation();
       }
     }
-    
+
     // Если пользователь прокрутил далеко от секции, выходим из режима анимации
     if (isSectionActive && (rect.top > window.innerHeight || rect.bottom < 0)) {
       isSectionActive = false;
@@ -463,7 +471,12 @@ function initHowItWorksAnimation() {
       hasAnimationPlayed = false;
     }
     // Если пользователь вернулся к секции после прокрутки вниз, сбрасываем флаг hasAnimationPlayed
-    else if (!isSectionActive && hasAnimationPlayed && isNearTop && rect.top > -50) {
+    else if (
+      !isSectionActive &&
+      hasAnimationPlayed &&
+      isNearTop &&
+      rect.top > -50
+    ) {
       hasAnimationPlayed = false;
     }
   };
@@ -474,13 +487,13 @@ function initHowItWorksAnimation() {
     isAnimating = false;
     stackProgress = 0;
     lockScroll();
-    
+
     // Сбрасываем позиции карточек
     cards.forEach((card, index) => {
       card.style.transform = '';
       card.style.zIndex = (index + 1).toString();
     });
-    
+
     // Добавляем обработчик wheel
     window.addEventListener('wheel', handleWheel, { passive: false });
   };
@@ -497,8 +510,8 @@ function initHowItWorksAnimation() {
     },
     {
       threshold: [0, 0.1, 0.3, 0.5],
-      rootMargin: '100px 0px' // Расширяем зону срабатывания
-    }
+      rootMargin: '100px 0px', // Расширяем зону срабатывания
+    },
   );
 
   observer.observe(howItWorksSection);
@@ -507,11 +520,11 @@ function initHowItWorksAnimation() {
   let scrollCheckRaf = null;
   const handleScrollCheck = () => {
     if (isAnimating && !isSectionActive) return;
-    
+
     if (scrollCheckRaf) {
       cancelAnimationFrame(scrollCheckRaf);
     }
-    
+
     scrollCheckRaf = requestAnimationFrame(() => {
       const rect = howItWorksSection.getBoundingClientRect();
       // Проверяем, если секция находится в области viewport или чуть выше/ниже
@@ -533,14 +546,22 @@ function initProfileProgressAnimation() {
   const progressSection = document.querySelector('.profile_progress');
   if (!progressSection) return;
 
-  const progressFill = progressSection.querySelector('.profile_progress-bar-fill');
-  const progressNumber = progressSection.querySelector('.profile_progress-number');
-  
+  const progressFill = progressSection.querySelector(
+    '.profile_progress-bar-fill',
+  );
+  const progressNumber = progressSection.querySelector(
+    '.profile_progress-number',
+  );
+
   if (!progressFill || !progressNumber) return;
 
   // Получаем целевой процент из data-атрибута или из текста
-  const targetPercent = parseInt(progressNumber.dataset.target || progressNumber.textContent.replace('%', ''), 10);
-  
+  const targetPercent = parseInt(
+    progressNumber.dataset.target ||
+      progressNumber.textContent.replace('%', ''),
+    10,
+  );
+
   if (isNaN(targetPercent) || targetPercent < 0 || targetPercent > 100) return;
 
   // Константы для расчета
@@ -566,7 +587,8 @@ function initProfileProgressAnimation() {
 
     // Вычисляем текущий процент и offset
     currentPercent = Math.floor(easedProgress * targetPercent);
-    const currentOffset = startOffset - (startOffset - targetOffset) * easedProgress;
+    const currentOffset =
+      startOffset - (startOffset - targetOffset) * easedProgress;
 
     // Обновляем SVG через CSS переменную
     progressSection.style.setProperty('--progress-offset', `${currentOffset}`);
@@ -595,12 +617,12 @@ function initCopyReferralLink() {
   const copyButton = document.querySelector('.profile_refferal-link-copy');
   const referralLink = document.querySelector('.profile_refferal-link');
   const linkWrapper = document.querySelector('.profile_refferal-link-wrapper');
-  
+
   if (!copyButton || !referralLink || !linkWrapper) return;
 
   copyButton.addEventListener('click', async () => {
     const textToCopy = referralLink.textContent.trim();
-    
+
     try {
       // Используем Clipboard API для копирования
       if (navigator.clipboard && window.isSecureContext) {
@@ -615,23 +637,23 @@ function initCopyReferralLink() {
         document.body.appendChild(textArea);
         textArea.focus();
         textArea.select();
-        
+
         try {
           document.execCommand('copy');
         } catch (err) {
           console.error('Failed to copy:', err);
           return;
         }
-        
+
         document.body.removeChild(textArea);
       }
-      
+
       // Визуальная обратная связь
       copyButton.classList.add('copied');
-      
+
       // Создаем и показываем toast-уведомление
       showCopyToast(linkWrapper);
-      
+
       setTimeout(() => {
         copyButton.classList.remove('copied');
       }, 200);
@@ -653,15 +675,15 @@ function showCopyToast(container) {
   const toast = document.createElement('div');
   toast.className = 'copy-toast';
   toast.textContent = 'Copied!';
-  
+
   // Добавляем toast в контейнер
   container.appendChild(toast);
-  
+
   // Запускаем анимацию появления
   requestAnimationFrame(() => {
     toast.classList.add('copy-toast--show');
   });
-  
+
   // Удаляем toast после анимации
   setTimeout(() => {
     toast.classList.remove('copy-toast--show');
@@ -669,6 +691,33 @@ function showCopyToast(container) {
       toast.remove();
     }, 300);
   }, 2000);
+}
+
+// Инициализация управления аватаром и кнопкой logout
+function initAvatarDropdown() {
+  const avatarButton = document.querySelector('.header_button-avatar');
+  const logoutButton = document.querySelector('.header_button-logout');
+
+  if (!avatarButton || !logoutButton) return;
+
+  // Переключение видимости кнопки logout при клике на аватар
+  avatarButton.addEventListener('click', (e) => {
+    e.stopPropagation();
+    logoutButton.classList.toggle('header_button-logout--show');
+  });
+
+  // Закрытие при клике вне области
+  document.addEventListener('click', (e) => {
+    const wrapper = avatarButton.closest('.header_button-avatar-wrapper');
+    if (wrapper && !wrapper.contains(e.target)) {
+      logoutButton.classList.remove('header_button-logout--show');
+    }
+  });
+
+  // Предотвращение закрытия при клике на саму кнопку logout
+  logoutButton.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
 }
 
 // Инициализация при загрузке DOM
@@ -680,6 +729,7 @@ if (document.readyState === 'loading') {
     initFormValidation();
     initProfileProgressAnimation();
     initCopyReferralLink();
+    initAvatarDropdown();
   });
 } else {
   initPopupManager();
@@ -688,4 +738,5 @@ if (document.readyState === 'loading') {
   initFormValidation();
   initProfileProgressAnimation();
   initCopyReferralLink();
+  initAvatarDropdown();
 }

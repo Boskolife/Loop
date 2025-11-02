@@ -1,3 +1,16 @@
+.profile-page{
+
+    .header{
+        .header_buttons{
+            display: none;
+        }
+
+        .header_button-avatar-wrapper{
+            display: block;
+        }
+    }
+}
+
 .container {
     max-width: 1400px;
     width: 100%;
